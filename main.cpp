@@ -6,8 +6,28 @@ int main ( int argc, char** argv )
     timeCheck = SDL_GetTicks();
     quit = false;
     currentFrame = 0;
+    currentScreenWidth = 0;
+    currentScreenHeight = 0;
     
-    window = SDL_CreateWindow("Diablo Logo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN /*SDL_WINDOW_SHOWN*/);
+    
+    SDL_DisplayMode current;
+    
+    SDL_Init(SDL_INIT_VIDEO);
+    
+    if(SDL_GetCurrentDisplayMode(0, &current) != 0)
+    {
+        SDL_Log("Could not get display mode for video display #0: %s", SDL_GetError());
+        currentScreenWidth = SCREEN_WIDTH;
+        currentScreenHeight = SCREEN_HEIGHT;
+    }
+    else
+    {
+        SDL_Log("Display #0: current display mode is %dx%dpx @ %dhz. \n", current.w, current.h, current.refresh_rate);
+        currentScreenWidth = current.w;
+        currentScreenHeight = current.h;
+    }
+    
+    window = SDL_CreateWindow("Diablo Logo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, currentScreenWidth, currentScreenHeight, SDL_WINDOW_FULLSCREEN /*SDL_WINDOW_SHOWN*/);
     if(window == NULL) {
         std::cout << "Couldn't initialize the window!" << std::endl;
         return 1;
@@ -20,8 +40,8 @@ int main ( int argc, char** argv )
         std::cout << "Couldn't load the image: " << SDL_GetError() << std::endl;
     }
     
-    logo.x = (SCREEN_WIDTH / 2) - (LOGO_WIDTH / 2);
-    logo.y = (SCREEN_HEIGHT / 2) - (LOGO_HEIGHT / 2);
+    logo.x = (currentScreenWidth / 2) - (LOGO_WIDTH / 2);
+    logo.y = (currentScreenHeight / 2) - (LOGO_HEIGHT / 2);
     logo.w = LOGO_WIDTH;
     logo.h = LOGO_HEIGHT;
     

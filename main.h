@@ -26,6 +26,8 @@
 
 #include <iostream>
 
+#define VERSION         1.0
+
 #define SCREEN_WIDTH    800
 #define SCREEN_HEIGHT   600
 #define LOGO_WIDTH      550
@@ -45,5 +47,8 @@ SDL_Rect logoClip[ LOGO_FRAMES ];
 
 unsigned int timeCheck;
 unsigned int currentFrame;
+
+int currentScreenWidth;
+int currentScreenHeight;
 
 #endif
